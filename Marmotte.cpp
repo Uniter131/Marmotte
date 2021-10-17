@@ -23,7 +23,7 @@ public:
 
     int xPos[3] = { 400, 600, 800 };
     int yPos[3] = { 60, 260, 460 };
-    int nextOxy[8] = { 8, 6, 7, 5, 0, 2, 3, 1 };
+    int nextOxy[9] = { 8, 6, 7, 5, 1, 0, 2, 3, 1 };
     string typeIndex = "smmzzztto012345678";
 
     void GenerateObjects();
@@ -156,10 +156,7 @@ void PlayerState::InteractObject(Board b, int type) {
             if (oxygen > 10) {
                 oxygen = 10;
             }
-            else {
-                oxy->locate(mainScene, xPos[b.nextOxy[currentTile] % 3], yPos[2 - b.nextOxy[currentTile] / 3]);
-                b.RandomSetting(currentTile, b.nextOxy[currentTile]);
-            }
+            b.swapObjects(b.typeIndex.find("o"), b.nextOxy[currentTile]);
             oxy_bar->setImage("Images/" + to_string(oxygen) + ".png");
             break;
         default:
@@ -176,7 +173,6 @@ int main()
     board.GenerateObjects();
     p.GenerateStates();
     board.gun->pick();
-    printf("%s\n", board.typeIndex.c_str());
 
     mainScene->setOnKeyboardCallback([&](auto scene, auto keyCode, auto isPressed)->bool {
         printf("%s\n", board.typeIndex.c_str());
